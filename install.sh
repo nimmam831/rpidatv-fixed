@@ -18,13 +18,6 @@ sudo apt-get -y install cmake libusb-1.0-0-dev g++ libx11-dev buffer libjpeg-dev
 # rpi-update to get latest firmware
 sudo rpi-update
 
-# Get the source software and copy to the Pi
-cd /home/pi
-wget https://github.com/F5OEO/rpidatv/archive/master.zip
-unzip -o master.zip 
-mv rpidatv-master rpidatv
-rm master.zip
-
 # Compile rpidatv core
 cd rpidatv/src
 make
@@ -52,12 +45,12 @@ make
 sudo make install
 
 # Compile adf4351
-cd /home/pi/rpidatv/src/adf4351
+cd ~/rpidatv/src/adf4351
 make
 cp adf4351 ../../bin/
 
 # Get rtl_sdr
-cd /home/pi
+cd ~
 wget https://github.com/keenerd/rtl-sdr/archive/master.zip
 unzip master.zip
 mv rtl-sdr-master rtl-sdr
@@ -71,7 +64,7 @@ sudo bash -c 'echo -e "\n# for RTL-SDR:\nblacklist dvb_usb_rtl28xxu\n" >> /etc/m
 cd ../../
 
 # Get leandvb
-cd /home/pi/rpidatv/src
+cd ~/rpidatv/src
 wget https://github.com/pabr/leansdr/archive/master.zip
 unzip master.zip
 mv leansdr-master leansdr
@@ -83,7 +76,7 @@ make
 cp leandvb ../../../../bin/
 
 # Get tstools
-cd /home/pi/rpidatv/src
+cd ~/rpidatv/src
 wget https://github.com/F5OEO/tstools/archive/master.zip
 unzip master.zip
 mv tstools-master tstools
@@ -99,13 +92,13 @@ cp bin/ts2es ../../bin/
 cd /opt/vc/src/hello_pi/
 sudo ./rebuild.sh
 
-cd /home/pi/rpidatv/src/hello_video
+cd ~/rpidatv/src/hello_video
 make
 cp hello_video.bin ../../bin/
 
 # TouchScreen GUI
 # FBCP : Duplicate Framebuffer 0 -> 1
-cd /home/pi/
+cd ~/
 wget https://github.com/tasanakorn/rpi-fbcp/archive/master.zip
 unzip master.zip
 mv rpi-fbcp-master rpi-fbcp
@@ -121,7 +114,7 @@ sudo install fbcp /usr/local/bin/fbcp
 cd ../../
 
 # Install Waveshare DTOVERLAY
-cd /home/pi/rpidatv/scripts/
+cd ~/rpidatv/scripts/
 sudo cp ./waveshare35a.dtbo /boot/overlays/
 
 # Fallback IP to 192.168.1.60
@@ -134,22 +127,22 @@ sudo bash -c 'echo -e "\ngpu_mem=128\nstart_x=1\n" >> /boot/config.txt'
 sudo sed -i 's/sync,//g' /etc/usbmount/usbmount.conf
 
 # Install executable for hardware shutdown button
-wget 'https://github.com/philcrump/pi-sdn/releases/download/v1.0/pi-sdn' -O /home/pi/pi-sdn
-chmod +x /home/pi/pi-sdn
+wget 'https://github.com/philcrump/pi-sdn/releases/download/v1.0/pi-sdn' -O ~/pi-sdn
+chmod +x ~/pi-sdn
 
 # Record Version Number
-cd /home/pi/rpidatv/scripts/
+cd ~/rpidatv/scripts/
 cp latest_version.txt installed_version.txt
-cd /home/pi
+cd ~
 
 # Switch to French if required
 if [ "$1" == "fr" ];
 then
   echo "Installing French Language and Keyboard"
-  cd /home/pi/rpidatv/scripts/
+  cd ~/rpidatv/scripts/
   sudo cp configs/keyfr /etc/default/keyboard
   cp configs/rpidatvconfig.fr rpidatvconfig.txt
-  cd /home/pi
+  cd ~
   echo "Completed French Install"
 else
   echo "Completed English Install"
@@ -158,16 +151,16 @@ fi
 if [ "$1" == "frstart" ];
 then
   echo "Installing French Language and Keyboard"
-  cd /home/pi/rpidatv/scripts/
+  cd ~/rpidatv/scripts/
   sudo cp configs/keyfr /etc/default/keyboard
   cp configs/rpidatvconfig.fr rpidatvconfig.txt
-  cd /home/pi
+  cd ~
   echo "Autostart install"
 #get from http://raspberrypi.stackexchange.com/questions/38025/disable-console-autologin-on-raspbian-jessie
   sudo ln -fs /etc/systemd/system/autologin@.service \
  /etc/systemd/system/getty.target.wants/getty@tty1.service
 
-  cp "/home/pi/rpidatv/scripts/configs/console_tx.bashrc" /home/pi/.bashrc
+  cp "~/rpidatv/scripts/configs/console_tx.bashrc" ~/.bashrc
   echo "Completed French Install Auto"
 fi
 
