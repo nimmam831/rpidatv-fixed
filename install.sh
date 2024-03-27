@@ -1,8 +1,12 @@
 #!/bin/bash
 
-# Updated by davecrump on 20161208 
+# Updated by nimmam831 on 20240327 
 
-set -e  # Don't report errors....
+# Get WiringPi then compile
+git clone https://github.com/WiringPi/WiringPi.git
+cd WiringPi
+./build
+cd .. # Go back to runtime directory
 
 # Update the package manager, then install the packages we need
 sudo dpkg --configure -a
